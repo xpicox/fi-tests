@@ -45,3 +45,8 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+
+## Eclipse
+.autotools
+.cproject
+.project
