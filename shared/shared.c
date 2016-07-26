@@ -106,7 +106,7 @@ struct test_size_param test_size[] = { { 1 << 1, 0 },
     { (1 << 1) + (1 << 0), 0 }, { 1 << 2, 0 }, { (1 << 2) + (1 << 1), 0 }, { 1
         << 3, 0 }, { (1 << 3) + (1 << 2), 0 }, { 1 << 4, 0 }, { (1 << 4)
         + (1 << 3), 0 }, { 1 << 5, 0 }, { (1 << 5) + (1 << 4), 0 }, { 1 << 6,
-        FT_DEFAULT_SIZE }, { (1 << 6) + (1 << 5), 0 }, { 1 << 7, 0 }, { (1 << 7)
+    FT_DEFAULT_SIZE }, { (1 << 6) + (1 << 5), 0 }, { 1 << 7, 0 }, { (1 << 7)
         + (1 << 6), 0 }, { 1 << 8, FT_DEFAULT_SIZE },
     { (1 << 8) + (1 << 7), 0 }, { 1 << 9, 0 }, { (1 << 9) + (1 << 8), 0 }, { 1
         << 10, FT_DEFAULT_SIZE }, { (1 << 10) + (1 << 9), 0 }, { 1 << 11, 0 }, {
@@ -265,16 +265,9 @@ int ft_alloc_msgs(void) {
 
   if (!ft_skip_mr
       && ((fi->mode & FI_LOCAL_MR) || (fi->caps & (FI_RMA | FI_ATOMIC)))) {
-    ret = fi_mr_reg(
-        domain,
-        buf,
-        buf_size,
-        ft_caps_to_mr_access(fi->caps),
-        0,
-        FT_MR_KEY,
-        0,
-        &mr,
-        NULL);
+    ret = fi_mr_reg(domain, buf, buf_size, ft_caps_to_mr_access(fi->caps), 0,
+    FT_MR_KEY, 0, &mr,
+    NULL);
     if (ret) {
       FT_PRINTERR("fi_mr_reg", ret);
       return ret;
@@ -389,12 +382,8 @@ int ft_start_server(void) {
   int ret;
 
   ret = fi_getinfo(
-      FT_FIVERSION,
-      opts.src_addr,
-      opts.src_port,
-      FI_SOURCE,
-      hints,
-      &fi_pep);
+  FT_FIVERSION, opts.src_addr, opts.src_port,
+  FI_SOURCE, hints, &fi_pep);
   if (ret) {
     FT_PRINTERR("fi_getinfo", ret);
     return ret;
