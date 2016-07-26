@@ -62,67 +62,64 @@ typedef int clockid_t;
 int clock_gettime(clockid_t clk_id, struct timespec *tp);
 #endif
 
-
 struct test_size_param {
-	int size;
-	int enable_flags;
+  int size;
+  int enable_flags;
 };
 
 extern struct test_size_param test_size[];
 const unsigned int test_cnt;
 #define TEST_CNT test_cnt
 
-#define FT_ENABLE_ALL		(~0)
-#define FT_DEFAULT_SIZE		(1 << 0)
+#define FT_ENABLE_ALL    (~0)
+#define FT_DEFAULT_SIZE    (1 << 0)
 
-static inline int ft_use_size(int index, int enable_flags)
-{
-	return (enable_flags == FT_ENABLE_ALL) ||
-		(enable_flags & test_size[index].enable_flags);
+static inline int ft_use_size(int index, int enable_flags) {
+  return (enable_flags == FT_ENABLE_ALL)
+      || (enable_flags & test_size[index].enable_flags);
 }
 
-
 enum precision {
-	NANO = 1,
-	MICRO = 1000,
-	MILLI = 1000000,
+  NANO = 1,
+  MICRO = 1000,
+  MILLI = 1000000,
 };
 
 enum ft_comp_method {
-	FT_COMP_SPIN = 0,
-	FT_COMP_SREAD,
-	FT_COMP_WAITSET,
-	FT_COMP_WAIT_FD
+  FT_COMP_SPIN = 0,
+  FT_COMP_SREAD,
+  FT_COMP_WAITSET,
+  FT_COMP_WAIT_FD
 };
 
 enum {
-	FT_OPT_ACTIVE		= 1 << 0,
-	FT_OPT_ITER		= 1 << 1,
-	FT_OPT_SIZE		= 1 << 2,
-	FT_OPT_RX_CQ		= 1 << 3,
-	FT_OPT_TX_CQ		= 1 << 4,
-	FT_OPT_RX_CNTR		= 1 << 5,
-	FT_OPT_TX_CNTR		= 1 << 6,
-	FT_OPT_VERIFY_DATA	= 1 << 7,
-	FT_OPT_ALIGN		= 1 << 8,
+  FT_OPT_ACTIVE = 1 << 0,
+  FT_OPT_ITER = 1 << 1,
+  FT_OPT_SIZE = 1 << 2,
+  FT_OPT_RX_CQ = 1 << 3,
+  FT_OPT_TX_CQ = 1 << 4,
+  FT_OPT_RX_CNTR = 1 << 5,
+  FT_OPT_TX_CNTR = 1 << 6,
+  FT_OPT_VERIFY_DATA = 1 << 7,
+  FT_OPT_ALIGN = 1 << 8,
 };
 
 struct ft_opts {
-	int iterations;
-	int warmup_iterations;
-	int transfer_size;
-	int window_size;
-	char *src_port;
-	char *dst_port;
-	char *src_addr;
-	char *dst_addr;
-	char *av_name;
-	int sizes_enabled;
-	int options;
-	enum ft_comp_method comp_method;
-	int machr;
-	int argc;
-	char **argv;
+  int iterations;
+  int warmup_iterations;
+  int transfer_size;
+  int window_size;
+  char *src_port;
+  char *dst_port;
+  char *src_addr;
+  char *dst_addr;
+  char *av_name;
+  int sizes_enabled;
+  int options;
+  enum ft_comp_method comp_method;
+  int machr;
+  int argc;
+  char **argv;
 };
 
 extern struct fi_info *fi_pep, *fi, *hints;
@@ -174,14 +171,14 @@ extern int ft_socket_pair[2];
 extern char default_port[8];
 
 #define INIT_OPTS (struct ft_opts) \
-	{	.options = FT_OPT_RX_CQ | FT_OPT_TX_CQ, \
-		.iterations = 1000, \
-		.warmup_iterations = 10, \
-		.transfer_size = 1024, \
-		.window_size = 64, \
-		.sizes_enabled = FT_DEFAULT_SIZE, \
-		.argc = argc, .argv = argv \
-	}
+  {  .options = FT_OPT_RX_CQ | FT_OPT_TX_CQ, \
+    .iterations = 1000, \
+    .warmup_iterations = 10, \
+    .transfer_size = 1024, \
+    .window_size = 64, \
+    .sizes_enabled = FT_DEFAULT_SIZE, \
+    .argc = argc, .argv = argv \
+  }
 
 #define FT_STR_LEN 32
 #define FT_MAX_CTRL_MSG 64
@@ -190,75 +187,81 @@ extern char default_port[8];
 #define FT_RMA_MR_ACCESS (FI_READ | FI_WRITE | FI_REMOTE_READ | FI_REMOTE_WRITE)
 
 int ft_getsrcaddr(char *node, char *service, struct fi_info *hints);
-int ft_read_addr_opts(char **node, char **service, struct fi_info *hints,
-		uint64_t *flags, struct ft_opts *opts);
+int ft_read_addr_opts(
+    char **node,
+    char **service,
+    struct fi_info *hints,
+    uint64_t *flags,
+    struct ft_opts *opts);
 char *size_str(char str[FT_STR_LEN], long long size);
 char *cnt_str(char str[FT_STR_LEN], long long cnt);
 int size_to_count(int size);
 
-
 #define FT_PRINTERR(call, retv) \
-	do { fprintf(stderr, call "(): %s:%d, ret=%d (%s)\n", __FILE__, __LINE__, \
-			(int) retv, fi_strerror((int) -retv)); } while (0)
+  do { fprintf(stderr, call "(): %s:%d, ret=%d (%s)\n", __FILE__, __LINE__, \
+      (int) retv, fi_strerror((int) -retv)); } while (0)
 
 #define FT_LOG(level, fmt, ...) \
-	do { fprintf(stderr, "[%s] fabtests:%s:%d: " fmt "\n", level, __FILE__, \
-			__LINE__, ##__VA_ARGS__); } while (0)
+  do { fprintf(stderr, "[%s] fabtests:%s:%d: " fmt "\n", level, __FILE__, \
+      __LINE__, ##__VA_ARGS__); } while (0)
 
 #define FT_ERR(fmt, ...) FT_LOG("error", fmt, ##__VA_ARGS__)
 #define FT_WARN(fmt, ...) FT_LOG("warn", fmt, ##__VA_ARGS__)
 
 #define FT_EQ_ERR(eq, entry, buf, len) \
-	FT_ERR("eq_readerr: %s", fi_eq_strerror(eq, entry.prov_errno, \
-				entry.err_data, buf, len))
+  FT_ERR("eq_readerr: %s", fi_eq_strerror(eq, entry.prov_errno, \
+        entry.err_data, buf, len))
 
 #define FT_CQ_ERR(cq, entry, buf, len) \
-	FT_ERR("cq_readerr: %s", fi_cq_strerror(cq, entry.prov_errno, \
-				entry.err_data, buf, len))
+  FT_ERR("cq_readerr: %s", fi_cq_strerror(cq, entry.prov_errno, \
+        entry.err_data, buf, len))
 
-#define FT_CLOSE_FID(fd)					\
-	do {							\
-		int ret;					\
-		if ((fd)) {					\
-			ret = fi_close(&(fd)->fid);		\
-			if (ret)				\
-				FT_ERR("fi_close (%d) fid %d",	\
-					ret, (int) (fd)->fid.fclass);	\
-			fd = NULL;				\
-		}						\
-	} while (0)
+#define FT_CLOSE_FID(fd)          \
+  do {              \
+    int ret;          \
+    if ((fd)) {          \
+      ret = fi_close(&(fd)->fid);    \
+      if (ret)        \
+        FT_ERR("fi_close (%d) fid %d",  \
+          ret, (int) (fd)->fid.fclass);  \
+      fd = NULL;        \
+    }            \
+  } while (0)
 
-#define FT_CLOSEV_FID(fd, cnt)			\
-	do {					\
-		int i;				\
-		if (!(fd))			\
-			break;			\
-		for (i = 0; i < (cnt); i++) {	\
-			FT_CLOSE_FID((fd)[i]);	\
-		}				\
-	} while (0)
+#define FT_CLOSEV_FID(fd, cnt)      \
+  do {          \
+    int i;        \
+    if (!(fd))      \
+      break;      \
+    for (i = 0; i < (cnt); i++) {  \
+      FT_CLOSE_FID((fd)[i]);  \
+    }        \
+  } while (0)
 
 int ft_alloc_bufs();
 int ft_open_fabric_res();
 int ft_start_server();
 int ft_alloc_active_res(struct fi_info *fi);
 int ft_init_ep();
-int ft_av_insert(struct fid_av *av, void *addr, size_t count, fi_addr_t *fi_addr,
-		uint64_t flags, void *context);
+int ft_av_insert(
+    struct fid_av *av,
+    void *addr,
+    size_t count,
+    fi_addr_t *fi_addr,
+    uint64_t flags,
+    void *context);
 int ft_init_av();
 int ft_exchange_keys(struct fi_rma_iov *peer_iov);
 void ft_free_res();
 void init_test(struct ft_opts *opts, char *test_name, size_t test_name_len);
 
-static inline void ft_start(void)
-{
-	opts.options |= FT_OPT_ACTIVE;
-	clock_gettime(CLOCK_MONOTONIC, &start);
+static inline void ft_start(void) {
+  opts.options |= FT_OPT_ACTIVE;
+  clock_gettime(CLOCK_MONOTONIC, &start);
 }
-static inline void ft_stop(void)
-{
-	clock_gettime(CLOCK_MONOTONIC, &end);
-	opts.options &= ~FT_OPT_ACTIVE;
+static inline void ft_stop(void) {
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  opts.options &= ~FT_OPT_ACTIVE;
 }
 int ft_sync();
 int ft_sync_pair(int status);
@@ -280,26 +283,39 @@ int ft_get_tx_comp(uint64_t total);
 
 void eq_readerr(struct fid_eq *eq, const char *eq_str);
 
-int64_t get_elapsed(const struct timespec *b, const struct timespec *a,
-		enum precision p);
-void show_perf(char *name, int tsize, int iters, struct timespec *start,
-		struct timespec *end, int xfers_per_iter);
-void show_perf_mr(int tsize, int iters, struct timespec *start,
-		struct timespec *end, int xfers_per_iter, int argc, char *argv[]);
+int64_t get_elapsed(
+    const struct timespec *b,
+    const struct timespec *a,
+    enum precision p);
+void show_perf(
+    char *name,
+    int tsize,
+    int iters,
+    struct timespec *start,
+    struct timespec *end,
+    int xfers_per_iter);
+void show_perf_mr(
+    int tsize,
+    int iters,
+    struct timespec *start,
+    struct timespec *end,
+    int xfers_per_iter,
+    int argc,
+    char *argv[]);
 int send_recv_greeting(void);
 int check_recv_msg(const char *message);
 
-#define FT_PROCESS_QUEUE_ERR(readerr, rd, queue, fn, str)	\
-	do {							\
-		if (rd == -FI_EAVAIL) {				\
-			readerr(queue, fn " " str);		\
-		} else {					\
-			FT_PRINTERR(fn, rd);			\
-		}						\
-	} while (0)
+#define FT_PROCESS_QUEUE_ERR(readerr, rd, queue, fn, str)  \
+  do {              \
+    if (rd == -FI_EAVAIL) {        \
+      readerr(queue, fn " " str);    \
+    } else {          \
+      FT_PRINTERR(fn, rd);      \
+    }            \
+  } while (0)
 
 #define FT_PROCESS_EQ_ERR(rd, eq, fn, str) \
-	FT_PROCESS_QUEUE_ERR(eq_readerr, rd, eq, fn, str)
+  FT_PROCESS_QUEUE_ERR(eq_readerr, rd, eq, fn, str)
 
 #define FT_PRINT_OPTS_USAGE(opt, desc) fprintf(stderr, " %-20s %s\n", opt, desc)
 
@@ -307,23 +323,23 @@ int check_recv_msg(const char *message);
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define ARRAY_SIZE(A) (sizeof(A)/sizeof(*A))
 
-#define TEST_ENUM_SET_N_RETURN(str, enum_val, type, data)	\
-	TEST_SET_N_RETURN(str, #enum_val, enum_val, type, data)
+#define TEST_ENUM_SET_N_RETURN(str, enum_val, type, data)  \
+  TEST_SET_N_RETURN(str, #enum_val, enum_val, type, data)
 
-#define TEST_SET_N_RETURN(str, val_str, val, type, data)	\
-	do {							\
-		if (!strncmp(str, val_str, strlen(val_str))) {	\
-			*(type *)(data) = val;			\
-			return 0;				\
-		}						\
-	} while (0)
+#define TEST_SET_N_RETURN(str, val_str, val, type, data)  \
+  do {              \
+    if (!strncmp(str, val_str, strlen(val_str))) {  \
+      *(type *)(data) = val;      \
+      return 0;        \
+    }            \
+  } while (0)
 
 /* for RMA tests --- we want to be able to select fi_writedata, but there is no
  * constant in libfabric for this */
 enum ft_rma_opcodes {
-	FT_RMA_READ = 1,
-	FT_RMA_WRITE,
-	FT_RMA_WRITEDATA,
+  FT_RMA_READ = 1,
+  FT_RMA_WRITE,
+  FT_RMA_WRITEDATA,
 };
 
 #ifdef __cplusplus
