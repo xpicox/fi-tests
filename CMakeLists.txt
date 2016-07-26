@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(fi-test CXX)
+project(fi-test CXX C)
 
 #Add internal search path for scripts
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
@@ -37,7 +37,8 @@ endif ()
 find_package(LibFabric REQUIRED)
 
 include_directories(
-        ${LIBFABRIC_INCLUDE_DIRS}
+  ${fi-test_SOURCE_DIR}
+  ${LIBFABRIC_INCLUDE_DIRS}
 )
 
 add_executable(
@@ -47,5 +48,18 @@ add_executable(
 
 target_link_libraries(
         fi-test
+        ${LIBFABRIC_LIBRARIES}
+)
+
+add_subdirectory(shared)
+
+add_executable(
+        rc_pingpong
+        rc_pingpong.c
+)
+
+target_link_libraries(
+        rc_pingpong
+        shared
         ${LIBFABRIC_LIBRARIES}
 )
