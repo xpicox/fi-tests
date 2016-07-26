@@ -53,9 +53,13 @@ extern "C" {
 #endif
 
 #ifdef __APPLE__
-#include "osx/osd.h"
-#elif defined __FreeBSD__
-#include "freebsd/osd.h"
+#include <sys/time.h>
+#include <time.h>
+#define CLOCK_REALTIME 0
+#define CLOCK_REALTIME_COARSE 0
+#define CLOCK_MONOTONIC 0
+typedef int clockid_t;
+int clock_gettime(clockid_t clk_id, struct timespec *tp);
 #endif
 
 
