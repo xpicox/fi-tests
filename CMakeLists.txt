@@ -60,6 +60,6 @@ add_executable(
 
 target_link_libraries(
         rc_pingpong
-        shared
+        reduced
         ${LIBFABRIC_LIBRARIES}
 )

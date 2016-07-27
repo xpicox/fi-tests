@@ -56,7 +56,7 @@
 #include <rdma/fi_cm.h>
 #include <rdma/fi_errno.h>
 
-#include "shared/shared.h"
+#include "shared/reduced.h"
 
 #define FT_CLOSE(DESC, STR)         \
   do {            \
