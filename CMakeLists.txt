@@ -51,6 +51,16 @@ target_link_libraries(
         ${LIBFABRIC_LIBRARIES}
 )
 
+add_executable(
+        print_services
+        print_services.cpp
+)
+
+target_link_libraries(
+        print_services
+        ${LIBFABRIC_LIBRARIES}
+)
+
 add_subdirectory(shared)
 
 add_executable(
