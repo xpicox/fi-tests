@@ -8,12 +8,12 @@ message(STATUS "Using ${CMAKE_CXX_COMPILER_ID} compiler")
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # using GCC
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-local-typedefs -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-local-typedefs -Wno-unused-parameter -fno-exceptions -fno-rtti")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2")
     set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # using Clang or AppleClang
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-parameter -fno-exceptions -fno-rtti")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2")
     set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3")
 else ()
