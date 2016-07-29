@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(fi-test CXX C)
+project(fi-test CXX)
 
 #Add internal search path for scripts
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
@@ -51,11 +51,21 @@ target_link_libraries(
         ${LIBFABRIC_LIBRARIES}
 )
 
+add_executable(
+        print_services
+        print_services.cpp
+)
+
+target_link_libraries(
+        print_services
+        ${LIBFABRIC_LIBRARIES}
+)
+
 add_subdirectory(shared)
 
 add_executable(
         rc_pingpong
-        rc_pingpong.c
+        rc_pingpong.cpp
 )
 
 target_link_libraries(

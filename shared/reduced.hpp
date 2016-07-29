@@ -10,15 +10,6 @@
 
 #include "rdma/fabric.h"
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifndef FT_FIVERSION
-#define FT_FIVERSION FI_VERSION(1,3)
-#endif
-
 #define FT_DEFAULT_SIZE    (1 << 0)
 
 extern char default_port[8];

@@ -2,6 +2,8 @@
 // Created by Valentino on 27/07/16.
 //
 
+#include "reduced.hpp"
+
 #include <netdb.h> // EAI_MEMORY
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,7 +11,6 @@
 
 #include <rdma/fi_errno.h>
 #include "rdma/fi_eq.h"
-#include "shared/reduced.h"
 
 char default_port[8] = "9228";
 struct fi_info *fi, *hints;
@@ -19,7 +20,8 @@ void ft_parseinfo(int op, char *optarg, struct fi_info *hints) {
   switch (op) {
   case 'n':
     if (!hints->domain_attr) {
-      hints->domain_attr = malloc(sizeof *(hints->domain_attr));
+      hints->domain_attr = static_cast<fi_domain_attr*>(malloc(
+          sizeof *(hints->domain_attr)));
       if (!hints->domain_attr) {
         perror("malloc");
         exit(EXIT_FAILURE);
@@ -29,7 +31,8 @@ void ft_parseinfo(int op, char *optarg, struct fi_info *hints) {
     break;
   case 'f':
     if (!hints->fabric_attr) {
-      hints->fabric_attr = malloc(sizeof *(hints->fabric_attr));
+      hints->fabric_attr = static_cast<fi_fabric_attr*>(malloc(
+          sizeof *(hints->fabric_attr)));
       if (!hints->fabric_attr) {
         perror("malloc");
         exit(EXIT_FAILURE);
@@ -117,7 +120,7 @@ static int getaddr(
     return 0;
   }
 
-  ret = fi_getinfo(FT_FIVERSION, node, service, flags, hints, &fi);
+  ret = fi_getinfo(fi_version(), node, service, flags, hints, &fi);
   if (ret) {
     FT_PRINTERR("fi_getinfo", ret);
     return ret;

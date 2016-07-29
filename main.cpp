@@ -1,5 +1,7 @@
 #include "rdma/fabric.h"
 #include "common/utils.hpp"
+#include <iostream>
+#include <memory>
 #include <unistd.h> // gethostname
 
 int main(int argc, const char *argv[]) {
