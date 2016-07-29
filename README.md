@@ -98,8 +98,8 @@ accepting/connecting (i.e. before sending the `FI_CONNECTED` event), however
 
 In the [pingpong] example.
 
-The server and the client post a certain amount of **receives** in their
-**completon queues**:
+The server and the client post a certain amount of **receive buffers** in the
+**receive queue** of the endpoint:
 ```c
 static int pp_post_recv(struct pingpong_context *ctx, int n) {
   int rc = 0;
@@ -150,7 +150,8 @@ The client starts the data transfer:
 as well as the ping pong, that terminates when the specified number of iterations
 is reached.
 
-
+Each side tracks the number of pending receives and when it reaches 1, they fill
+the completion queue with new receive buffers. 
 
 [//]: # (pending server 001  p = 001 & 110 = 000 -> send -> p = 011)
 [//]: # (Se stavo aspettando solo una receive e mi è arrivata una receive allora spedisci)
