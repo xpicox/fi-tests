@@ -120,7 +120,7 @@ static int getaddr(
     return 0;
   }
 
-  ret = fi_getinfo(FT_FIVERSION, node, service, flags, hints, &fi);
+  ret = fi_getinfo(fi_version(), node, service, flags, hints, &fi);
   if (ret) {
     FT_PRINTERR("fi_getinfo", ret);
     return ret;

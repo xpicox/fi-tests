@@ -496,7 +496,7 @@ int main(int argc, char *argv[]) {
   if (rc)
     return -rc;
 
-  rc = fi_getinfo(FT_FIVERSION, node, service, flags, hints, &fi);
+  rc = fi_getinfo(fi_version(), node, service, flags, hints, &fi);
   if (rc) {
     FT_PRINTERR("fi_getinfo", rc);
     return -rc;
