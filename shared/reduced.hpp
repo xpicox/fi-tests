@@ -10,8 +10,6 @@
 
 #include "rdma/fabric.h"
 
-#define FT_DEFAULT_SIZE    (1 << 0)
-
 extern char default_port[8];
 
 enum ft_comp_method {
@@ -69,7 +67,7 @@ void ft_usage(char *name, char *desc);
     .warmup_iterations = 10, \
     .transfer_size = 1024, \
     .window_size = 64, \
-    .sizes_enabled = FT_DEFAULT_SIZE, \
+    .sizes_enabled = 1, \
     .argc = argc, .argv = argv \
   }
 
