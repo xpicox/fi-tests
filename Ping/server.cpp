@@ -29,7 +29,7 @@ struct pingpong_context {
 
 // Dependencies from redeuced.h
 
-// Required by
+// Required by ft_opts
 enum ft_comp_method {
   FT_COMP_SPIN = 0,
   FT_COMP_SREAD,
@@ -382,7 +382,7 @@ int main(int argc, char **argv) {
 
   unsigned long size = 4096;
   int rx_depth_default = 500;
-  int rx_depth;
+  int rx_depth = 0;
   int use_event = 0; // not sure if required
   int rcnt, scnt = 0;
   int ret, rc = 0;
@@ -409,12 +409,12 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (optind==argc - 1) { // Last element
-    opts.dst_addr = argv[optind];
-  } else if (optind < argc) {
-    // usage(argv[0]);
-    return 1;
-  }
+//  if (optind==argc - 1) { // Last element
+//    opts.dst_addr = argv[optind];
+//  } else if (optind < argc) {
+//    // usage(argv[0]);
+//    return 1;
+//  }
 
   page_size = sysconf(_SC_PAGE_SIZE);
 
@@ -459,6 +459,7 @@ int main(int argc, char **argv) {
     struct fi_cq_err_entry cq_err;
     size_t rd;
 
+    // TODO(pico) : Handle event FI_SHUTDOWN form the Event Queue
     if (use_event) {
       rd = fi_cq_sread(ctx->cq, &wc, 1, NULL, -1);
     } else {
@@ -478,11 +479,14 @@ int main(int argc, char **argv) {
       goto err3;
     }
 
-    assert(reinterpret_cast<long int>(wc.op_context) == PINGPONG_RECV_WCID && "Unexpected cq entry context");
+    assert(reinterpret_cast<long int>(wc.op_context)==PINGPONG_RECV_WCID
+               && "Unexpected cq entry context");
 
-    if(!(std::cout << static_cast<char*>(ctx -> buf))) {
+    if (!(std::cout << rx_depth - ctx->routs + 1 << ": " << static_cast<char *>(ctx->buf))) {
       goto err3;
     }
+
+    std::cout << "\n";
 
     if (--ctx->routs <= 1) {
       ctx->routs += pp_post_recv(ctx, ctx->rx_depth - ctx->routs);
