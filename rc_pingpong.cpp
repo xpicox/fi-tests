@@ -421,7 +421,15 @@ int main(int argc, char *argv[]) {
   char * ptr;
   srand48(getpid() * time(NULL));
 
-  opts = INIT_OPTS;
+  ft_opts opts;
+  opts.options = FT_OPT_RX_CQ | FT_OPT_TX_CQ;
+  opts.iterations = 1000;
+  opts.warmup_iterations = 10;
+  opts.transfer_size = 1024;
+  opts.window_size = 64;
+  opts.sizes_enabled = 1;
+  opts.argc = argc;
+  opts.argv = argv;
 
   hints = fi_allocinfo();
   if (!hints)

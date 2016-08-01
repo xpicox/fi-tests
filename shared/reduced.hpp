@@ -51,9 +51,6 @@ struct ft_opts {
 
 extern struct fi_info *fi, *hints;
 
-
-extern struct ft_opts opts;
-
 void ft_parseinfo(int op, char *optarg, struct fi_info *hints);
 void ft_parse_addr_opts(int op, char *optarg, struct ft_opts *opts);
 void ft_usage(char *name, char *desc);
@@ -61,16 +58,6 @@ void ft_usage(char *name, char *desc);
 #define ADDR_OPTS "b:p:s:a:"
 #define INFO_OPTS "n:f:"
 
-#define INIT_OPTS (struct ft_opts) \
-  {  options : FT_OPT_RX_CQ | FT_OPT_TX_CQ, \
-    iterations : 1000, \
-    warmup_iterations : 10, \
-    transfer_size : 1024, \
-    window_size : 64, \
-    sizes_enabled : 1, \
-    argc : argc, \
-    argv : argv \
-  }
 
 int ft_read_addr_opts(
     char **node,
