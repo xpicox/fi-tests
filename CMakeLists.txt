@@ -75,3 +75,13 @@ target_link_libraries(
 )
 
 add_subdirectory(Ping)
+
+add_executable(
+    fi_pingpong
+    pingpong.cpp
+)
+
+target_link_libraries(
+    fi_pingpong
+    ${LIBFABRIC_LIBRARIES}
+)
