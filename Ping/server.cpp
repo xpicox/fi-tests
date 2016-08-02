@@ -457,13 +457,18 @@ int main(int argc, char **argv) {
   while (1) {
     struct fi_cq_entry wc;
     struct fi_cq_err_entry cq_err;
+    struct fi_eq_cm_entry st;
     size_t rd;
+    uint32_t event;
 
-    // TODO(pico) : Handle event FI_SHUTDOWN form the Event Queue
     if (use_event) {
       rd = fi_cq_sread(ctx->cq, &wc, 1, NULL, -1);
     } else {
       do {
+        rd = fi_eq_read(ctx->eq, &event, &st, sizeof(st), 0);
+        if (rd != -FI_EAGAIN && event == FI_SHUTDOWN) {
+          goto err3;
+        }
         rd = fi_cq_read(ctx->cq, &wc, 1);
       } while (rd==-FI_EAGAIN);
     }
@@ -500,6 +505,7 @@ int main(int argc, char **argv) {
 
   return 0;
   err3:
+  std::cout << "Shutting down" << std::endl;
   fi_shutdown(ctx->ep, 0);
   err2:
   ret = pp_close_ctx(ctx);
